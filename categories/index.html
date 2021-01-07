@@ -5,6 +5,7 @@
   <!-- cungudafa百度收录验证编号 -->
   <!-- <meta name="baidu-site-verification" content="LukfTcyXmC" /> -->
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/c8f13bc8.js","daovoice")</script>
   
   <title itemprop="name">分类 | Whwhz</title>
   
@@ -94,6 +95,14 @@
           <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/WechatIMG32.png">
         </a>
       </div>
+      <div class="poem-wrap">
+        <div class="poem-border poem-left">
+        </div>
+        <div class="poem-border poem-right">
+        </div>
+        <p id="poem" style="color:#fff">loading...</p>
+        <p id="info" style="color:#fff">loading...</p>
+      </div>
       <div class="header-info">
         <p>光孕众生，众生随影。光涤吾魂，影庇吾体。</p>
         <div class="top-social_v2">
@@ -108,7 +117,7 @@
       </div>
     </div>
   </figure>
-  
+
   <!-- <div id="video-container">
     <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
     </video>
@@ -126,6 +135,20 @@
     </span>
   </div>
 </div>
+<script>
+  $.get("https://v1.hitokoto.cn?c=h&c=a", function (datastatus) {
+    if (status == 'success') {
+      $('#poem').html(data.hitokoto)
+      if (data.from_who != null) {
+        $('#info').html(data.from_who + " · " + "《" + data.from + "》 ");
+      } else {
+        $('#info').html(" “ " + data.from + "” ");
+      }
+    } else {
+      $('#poem').html("获取出错啦");
+    }
+  });
+</script>
     <div id="page" class="site wrapper">
       <!-- banner -->
       <header class="site-header no-select gizle sabit" role="banner">
@@ -571,6 +594,14 @@ gitalk.render('gitalk-container')
     }
   });
   </script>
+   
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/f6b2a0b1.js","daovoice")
+      daovoice('init', {
+        app_id: ""
+      });
+      daovoice('update');
+    </script>
+    
     <!-- Side menu -->
     <div class="openNav no-select" style="height: 50px;">
       <div class="iconflat no-select" style="width: 50px; height: 50px;">

@@ -5,6 +5,7 @@
   <!-- cungudafa百度收录验证编号 -->
   <!-- <meta name="baidu-site-verification" content="LukfTcyXmC" /> -->
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/c8f13bc8.js","daovoice")</script>
   
   <title itemprop="name">Whwhz</title>
   
@@ -94,6 +95,14 @@
           <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/WechatIMG32.png">
         </a>
       </div>
+      <div class="poem-wrap">
+        <div class="poem-border poem-left">
+        </div>
+        <div class="poem-border poem-right">
+        </div>
+        <p id="poem" style="color:#fff">loading...</p>
+        <p id="info" style="color:#fff">loading...</p>
+      </div>
       <div class="header-info">
         <p>光孕众生，众生随影。光涤吾魂，影庇吾体。</p>
         <div class="top-social_v2">
@@ -108,7 +117,7 @@
       </div>
     </div>
   </figure>
-  
+
   <!-- <div id="video-container">
     <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
     </video>
@@ -126,6 +135,20 @@
     </span>
   </div>
 </div>
+<script>
+  $.get("https://v1.hitokoto.cn?c=h&c=a", function (datastatus) {
+    if (status == 'success') {
+      $('#poem').html(data.hitokoto)
+      if (data.from_who != null) {
+        $('#info').html(data.from_who + " · " + "《" + data.from + "》 ");
+      } else {
+        $('#info').html(" “ " + data.from + "” ");
+      }
+    } else {
+      $('#poem').html("获取出错啦");
+    }
+  });
+</script>
     <div id="page" class="site wrapper">
       <!-- banner -->
       <header class="site-header no-select gizle sabit" role="banner">
@@ -413,14 +436,69 @@
   
     
   
+    
+  
   
     
       
 <article  class="post post-list-thumb post-list-thumb-left"  class="post post-list-thumb" itemscope="" itemtype="http://schema.org/BlogPosting">
   <div class="post-thumb">
+    <a href="/post/31766.html">
+      
+        <img class="lazyload" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/linglong5.jpg">
+      
+      </a>
+  </div>
+  <div class="post-content-wrap">
+    <div class="post-content">
+      <div class="post-date">
+        <i class="iconfont icon-time">
+        </i>2021-1-7 16:01
+      </div>
+      <a href="/post/31766.html" class="post-title">
+        <h3>ones</h3>
+      </a>
+      <div class="post-meta">
+        <span>
+          
+        </span>
+        <span><i class="fa fa-tags"></i>
+        
+            <a href="/tags/%E4%B8%80/">一<em>·</em></a>
+          
+        </span>
+        <span>
+          <i class="iconfont icon-file"></i>
+          
+        </span>
+        <!-- <span><i class="iconfont icon-attention"></i>
+          本页共<span id="busuanzi_value_page_pv"> </span>次阅读
+        </span> -->
+      </div>
+      <div class="float-content">
+        <p style="color: #666;">
+        
+            ones pro plus max
+        
+        </p>
+        <div class="post-bottom">
+          <a href="/post/31766.html" class="button-normal">
+            <i class="iconfont icon-caidan"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+     
+  
+    
+      
+<article  class="post post-list-thumb" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <div class="post-thumb">
     <a href="/post/16107.html">
       
-        <img class="lazyload" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/linglong3.jpg">
+        <img class="lazyload" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/linglong1.jpg">
       
       </a>
   </div>
@@ -488,6 +566,13 @@
 
 
 <!-- daovoice聊天功能 -->
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/f6b2a0b1.js","daovoice")
+    daovoice('init', {
+      app_id: "c8f13bc8"
+    });
+    daovoice('update');
+  </script>
 
 
 <!-- weather -->
@@ -661,6 +746,14 @@
     }
   });
   </script>
+   
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/f6b2a0b1.js","daovoice")
+      daovoice('init', {
+        app_id: ""
+      });
+      daovoice('update');
+    </script>
+    
     <!-- Side menu -->
     <div class="openNav no-select" style="height: 50px;">
       <div class="iconflat no-select" style="width: 50px; height: 50px;">
