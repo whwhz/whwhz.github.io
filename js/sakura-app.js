@@ -978,16 +978,28 @@ function get_poem (poem_ele, info_ele) {
   var poem = document.querySelector(poem_ele)
   var info = document.querySelector(info_ele)
   var xhr = new XMLHttpRequest()
-  xhr.open('get', 'https://v2.jinrishici.com/one.json')
+  xhr.open('get', 'https://v1.hitokoto.cn?c=h&c=a')
   xhr.withCredentials = true
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       var data = JSON.parse(xhr.responseText)
-      poem.innerHTML = data.data.content
-      info.innerHTML = '【' + data.data.origin.dynasty + '】' + data.data.origin.author + '《' + data.data.origin.title + '》'
+      poem.innerHTML = data.data.hitokoto
+      info.innerHTML = " “ " + data.data.from + "” "
     }
   }
   xhr.send()
+  //   $.get("https://v1.hitokoto.cn?c=h&c=a", function (datastatus) {
+  //   if (status == 'success') {
+  //     $('#poem').html(data.hitokoto)
+  //     if (data.from_who != null) {
+  //       $('#info').html(data.from_who + " · " + "《" + data.from + "》 ");
+  //     } else {
+  //       $('#info').html(" “ " + data.from + "” ");
+  //     }
+  //   } else {
+  //     $('#poem').html("获取出错啦");
+  //   }
+  // });
 }
 
 // function loadBotui() {

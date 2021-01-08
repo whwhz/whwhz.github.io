@@ -986,10 +986,6 @@ pre {
     overflow: auto
 }
 
-pre[class*="language-"] {
-    padding: 2em !important;
-}
-
 code,
 kbd,
 pre,
@@ -1127,7 +1123,7 @@ i {
 
 blockquote {
     display: block;
-    background: (255, 255, 255, 1);
+    background: (255,255,255,1);
     padding: 15px 20px 15px 45px;
     margin: 0 0 20px;
     position: relative;
@@ -2738,8 +2734,7 @@ i.iconfont.hotpost {
 }
 
 .entry-content h2:after {
-    content: "Ⅰ";
-    /*\00B6*/
+    content: "Ⅰ";/*\00B6*/
     position: absolute;
     color: #ff6d6d;
     font-family: 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', sans-serif;

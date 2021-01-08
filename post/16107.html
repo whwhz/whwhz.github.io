@@ -100,8 +100,8 @@
         </div>
         <div class="poem-border poem-right">
         </div>
-        <p id="poem" style="color:#fff">loading...</p>
-        <p id="info" style="color:#fff">loading...</p>
+        <p id="poem2" style="color:#fff">loading...</p>
+        <p id="info2" style="color:#fff">loading...</p>
       </div>
       <div class="header-info">
         <p>光孕众生，众生随影。光涤吾魂，影庇吾体。</p>
@@ -136,16 +136,16 @@
   </div>
 </div>
 <script>
-  $.get("https://v1.hitokoto.cn?c=h&c=a", function (datastatus) {
+  $.get("https://v1.hitokoto.cn?c=h&c=a", function (data, status) {
     if (status == 'success') {
-      $('#poem').html(data.hitokoto)
+      $('#poem2').html(data.hitokoto)
       if (data.from_who != null) {
-        $('#info').html(data.from_who + " · " + "《" + data.from + "》 ");
+        $('#info2').html(data.from_who + " · " + "《" + data.from + "》 ");
       } else {
-        $('#info').html(" “ " + data.from + "” ");
+        $('#info2').html(" “ " + data.from + "” ");
       }
     } else {
-      $('#poem').html("获取出错啦");
+      $('#poem2').html("获取出错啦");
     }
   });
 </script>
@@ -372,13 +372,13 @@
         
         <div class="entry-content">
           <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 <div id="weather-v2-plugin-simple"></div>
 <script>
@@ -577,7 +577,7 @@ gitalk.render('gitalk-container')
                 <script>
                 var now = new Date(); 
                 function createtime() { 
-                      var grt= new Date("Thu Jan 07 2021 18:23:00 GMT+0800 (GMT+08:00)");//在此处修改你的建站时间
+                      var grt= new Date("Thu Jan 07 2021 18:23:00 GMT+0800 (中国标准时间)");//在此处修改你的建站时间
                       now.setTime(now.getTime()+250); 
                       days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
                       hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 

@@ -100,8 +100,8 @@
         </div>
         <div class="poem-border poem-right">
         </div>
-        <p id="poem" style="color:#fff">loading...</p>
-        <p id="info" style="color:#fff">loading...</p>
+        <p id="poem2" style="color:#fff">loading...</p>
+        <p id="info2" style="color:#fff">loading...</p>
       </div>
       <div class="header-info">
         <p>光孕众生，众生随影。光涤吾魂，影庇吾体。</p>
@@ -136,16 +136,16 @@
   </div>
 </div>
 <script>
-  $.get("https://v1.hitokoto.cn?c=h&c=a", function (datastatus) {
+  $.get("https://v1.hitokoto.cn?c=h&c=a", function (data, status) {
     if (status == 'success') {
-      $('#poem').html(data.hitokoto)
+      $('#poem2').html(data.hitokoto)
       if (data.from_who != null) {
-        $('#info').html(data.from_who + " · " + "《" + data.from + "》 ");
+        $('#info2').html(data.from_who + " · " + "《" + data.from + "》 ");
       } else {
-        $('#info').html(" “ " + data.from + "” ");
+        $('#info2').html(" “ " + data.from + "” ");
       }
     } else {
-      $('#poem').html("获取出错啦");
+      $('#poem2').html("获取出错啦");
     }
   });
 </script>
@@ -536,7 +536,7 @@
                 <script>
                 var now = new Date(); 
                 function createtime() { 
-                      var grt= new Date("Thu Jan 07 2021 18:23:00 GMT+0800 (GMT+08:00)");//在此处修改你的建站时间
+                      var grt= new Date("Thu Jan 07 2021 18:23:00 GMT+0800 (中国标准时间)");//在此处修改你的建站时间
                       now.setTime(now.getTime()+250); 
                       days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
                       hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
