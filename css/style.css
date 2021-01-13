@@ -3338,6 +3338,7 @@ h1.page-title.mb- {
 }
 
 .author-profile p {
+    min-height: 52px;
     font-size: 13px;
     line-height: 30px;
     margin: 15px 0 0;
