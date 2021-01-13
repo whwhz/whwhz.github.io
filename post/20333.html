@@ -267,7 +267,52 @@
         <!--套嵌目录使用（主要为了支援评论）-->
         
         <div class="entry-content">
-          <h2 id="自己一些日常使用的过的工具函数-目前分为数据类-时间类-对象类-验证类和浏览器类等-持续更新"><a href="#自己一些日常使用的过的工具函数-目前分为数据类-时间类-对象类-验证类和浏览器类等-持续更新" class="headerlink" title="自己一些日常使用的过的工具函数, 目前分为数据类, 时间类, 对象类, 验证类和浏览器类等, 持续更新"></a>自己一些日常使用的过的工具函数, 目前分为数据类, 时间类, 对象类, 验证类和浏览器类等, 持续更新</h2><h3 id="对象类"><a href="#对象类" class="headerlink" title="对象类"></a>对象类</h3><pre class=" language-深度克隆"><code class="language-深度克隆">/**
+          <h2 id="自己一些日常使用的过的工具函数-目前分为数据处理类-时间处理类-对象类-验证函数类和浏览器功能类等-持续更新"><a href="#自己一些日常使用的过的工具函数-目前分为数据处理类-时间处理类-对象类-验证函数类和浏览器功能类等-持续更新" class="headerlink" title="自己一些日常使用的过的工具函数, 目前分为数据处理类, 时间处理类, 对象类, 验证函数类和浏览器功能类等, 持续更新"></a>自己一些日常使用的过的工具函数, 目前分为数据处理类, 时间处理类, 对象类, 验证函数类和浏览器功能类等, 持续更新</h2><h3 id="对象类"><a href="#对象类" class="headerlink" title="对象类"></a>对象类</h3><pre class=" language-格式化JSON内容"><code class="language-格式化JSON内容">/**
+ * @param {Object}
+ * @returns {JSON}
+ */
+const stringify = (() => {
+  const replacer = (key, val) => {
+    if(typeof val === 'symbol') {
+      return val.toString();
+    }
+    if(val instanceof Set) {
+      return Array.from(val);
+    }
+    if(val instanceof Map) {
+      return Array.from(val.entries());
+    }
+    if(typeof val === 'function') {
+      return val.toString();
+    }
+    return val;
+  }
+
+  return (obj, spaces = 0) => JSON.stringify(obj, replacer, spaces)
+})();</code></pre>
+<pre class=" language-空值检测"><code class="language-空值检测">/**
+ * @param {Object|Array} 用于检测对象或数组是否为空
+ * @returns {Boolean}
+ */
+export function isEmpty(x) {
+  if(Array.isArray(x)
+    || typeof x === 'string'
+    || x instanceof String
+   ) {
+    return x.length === 0;
+  }
+
+  if(x instanceof Map || x instanceof Set) {
+    return x.size === 0;
+  }
+
+  if(({}).toString.call(x) === '[object Object]') {
+    return Object.keys(x).length === 0;
+  }
+
+  return false;
+}</code></pre>
+<pre class=" language-深度克隆"><code class="language-深度克隆">/**
  * @param {Object} 一般JSON.parse(JSON.stringify(obj))不能满足就用得到
  * @returns {Object}
  */
@@ -389,7 +434,65 @@ export function formatTime(time, option) {
     )
   }
 }</code></pre>
-<h3 id="数据类"><a href="#数据类" class="headerlink" title="数据类"></a>数据类</h3><pre class=" language-查询参数截取"><code class="language-查询参数截取">/**
+<h3 id="数据类"><a href="#数据类" class="headerlink" title="数据类"></a>数据类</h3><pre class=" language-数据的循环"><code class="language-数据的循环">/** 
+ * @param {Array|Object} list
+ * @param {func} cb 回调函数
+ */
+export function forEach(list, callback) {
+  const entries = Object.entries(list);
+  let i = 0;
+  const len = entries.length;
+
+  for(;i < len; i++) {
+    const res = callback(entries[i][1], entries[i][0], list);
+
+    if(res === true) break;
+  }
+}</code></pre>
+<pre class=" language-类型检测"><code class="language-类型检测">export const isOfType = (() => {
+  // create a plain object with no prototype
+  const type = Object.create(null);
+
+  // check for null type
+  type.null = x => x === null;
+  // check for undefined type
+  type.undefined = x => x === undefined;
+  // check for nil type. Either null or undefined
+  type.nil = x => type.null(x) || type.undefined(x);
+  // check for strings and string literal type. e.g: 's', "s", `str`, new String()
+  type.string = x => !type.nil(x) && (typeof x === 'string' || x instanceof String);
+  // check for number or number literal type. e.g: 12, 30.5, new Number()
+  type.number = x => !type.nil(x)
+    && (// NaN & Infinity have typeof "number" and this excludes that
+      (!isNaN(x) && isFinite(x)
+      && typeof x === 'number'
+    ) || x instanceof Number);
+  // check for boolean or boolean literal type. e.g: true, false, new Boolean()
+  type.boolean = x => !type.nil(x) && (typeof x === 'boolean' || x instanceof Boolean);
+  // check for array type
+  type.array = x => !type.nil(x) && Array.isArray(x);
+  // check for object or object literal type. e.g: {}, new Object(), Object.create(null)
+  type.object = x => ({}).toString.call(x) === '[object Object]';
+  // check for provided type instance
+  type.type = (x, X) => !type.nil(x) && x instanceof X;
+  // check for set type
+  type.set = x => type.type(x, Set);
+  // check for map type
+  type.map = x => type.type(x, Map);
+  // check for date type
+  type.date = x => type.type(x, Date);
+
+  return type;
+})();</code></pre>
+<pre class=" language-随机字符串"><code class="language-随机字符串">/**
+ * @returns {string}
+ */
+export function createUniqueString() {
+  const timestamp = +new Date() + ''
+  const randomNum = parseInt((1 + Math.random()) * 65536) + ''
+  return (+(randomNum + timestamp)).toString(32)
+}</code></pre>
+<pre class=" language-查询参数截取"><code class="language-查询参数截取">/**
  * @param {string} url
  * @returns {Object}
  */
@@ -466,7 +569,68 @@ export const pwdValidate = pwd => {
   }
 };
 </code></pre>
-<h3 id="浏览器类"><a href="#浏览器类" class="headerlink" title="浏览器类"></a>浏览器类</h3><pre class=" language-修改元素class"><code class="language-修改元素class">/**
+<h3 id="浏览器类"><a href="#浏览器类" class="headerlink" title="浏览器类"></a>浏览器类</h3><pre class=" language-文件地址下载封装"><code class="language-文件地址下载封装">/* 相较于a标签直接下载可以附加参数, 可以用于权限控制中的请求下载
+ * @param {String} 文件url
+ * @param {Object} 请求参数
+ * @returns {Boolean}
+ */
+export function downloadFile(downLoadurl, params = {}, method = "get") {
+  // params = { ...params, token: store.getters.token };
+  const downloadForm = document.createElement("form");
+  try {
+    if (downloadForm) {
+      // downloadForm.action = 'http://192.168.1.108:9001' + downLoadurl
+      downloadForm.action = downLoadurl;
+      downloadForm.method = method;
+      for (const key in params) {
+        if (!params[key]) continue;
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = params[key];
+        downloadForm.appendChild(input);
+      }
+      // downloadForm.headers = {
+      //   token: store.getters.token
+      // };
+      document.body.appendChild(downloadForm);
+      downloadForm.submit();
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    document.body.removeChild(downloadForm);
+  }
+}</code></pre>
+<pre class=" language-添加/删除class"><code class="language-添加/删除class">/**
+ * Add class to element
+ * @param {HTMLElement} elm
+ * @param {string} cls
+ */
+export function addClass(ele, cls) {
+  if (!hasClass(ele, cls)) ele.className += ' ' + cls
+}
+
+/**
+ * Remove class from element
+ * @param {HTMLElement} elm
+ * @param {string} cls
+ */
+export function removeClass(ele, cls) {
+  if (hasClass(ele, cls)) {
+    const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
+    ele.className = ele.className.replace(reg, ' ')
+  }
+}</code></pre>
+<pre class=" language-检测是否存在class"><code class="language-检测是否存在class">/**
+ * @param {HTMLElement} elm
+ * @param {string} cls
+ * @returns {boolean}
+ */
+export function hasClass(ele, cls) {
+  return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
+}</code></pre>
+<pre class=" language-修改元素class"><code class="language-修改元素class">/**
  * @param {HTMLElement} element
  * @param {string} className
  */
@@ -485,7 +649,7 @@ export function toggleClass(element, className) {
   }
   element.className = classString
 }</code></pre>
-<pre><code>/* base64转file
+<pre class=" language-文件格式转换"><code class="language-文件格式转换">/* base64转file
  * @param {file}
  * @returns {base64}
  */
@@ -499,6 +663,22 @@ export function toggleClass(element, className) {
     u8arr[n] = bstr.charCodeAt(n);
   }
   return new File([u8arr], { type: mime });
+}
+/* base64转二进制
+ * @param {String} “data:image/png;base64,****”,逗号之前都是一些说明性的文字，我们只需要逗号之后的就行了
+ * @returns {blob}
+ */
+function dataToBlob(data, mime) {
+  data = data.split(',')[1]
+  data = window.atob(data)
+  var ia = new Uint8Array(data.length)
+  for (var i = 0; i < data.length; i++) {
+    ia[i] = data.charCodeAt(i)
+  }
+  // canvas.toDataURL 返回的默认格式就是 image/png
+  return new Blob([ia], {
+    type: mime
+  })
 }
 </code></pre>
 <pre class=" language-图片压缩"><code class="language-图片压缩">/* 压缩图片
@@ -541,6 +721,31 @@ export function compressImg(file) {
   });
 }
 </code></pre>
+<div id="weather-v2-plugin-simple"></div>
+<script>
+WIDGET = {
+  CONFIG: {
+    "modules": "0124",
+    "background": 1,
+    "tmpColor": "FFFFFF",
+    "tmpSize": 16,
+    "cityColor": "FFFFFF",
+    "citySize": 16,
+    "aqiSize": 16,
+    "weatherIconSize": 24,
+    "alertIconSize": 18,
+    "padding": "10px 10px 10px 10px",
+    "shadow": "1",
+    "language": "auto",
+    "borderRadius": 5,
+    "fixed": "false",
+    "vertical": "middle",
+    "horizontal": "center",
+    "key": "B1Dc3JIvYg"
+  }
+}
+</script>
+<script src="https://apip.weatherdt.com/simple/static/js/weather-simple-common.js?v=2.0"></script>
 
         </div>
 
@@ -607,7 +812,7 @@ wpac_init.push({widget: 'Rating', id: 23889});
           <div class="tag-cloud-title">
           </div>
           <div class="tag-cloud-tags">
-            <a href="/tags/%E4%B8%80/" style="font-size: 10px; color: #f06966">一</a>
+            <a href="/tags/vue/" style="font-size: 10px; color: #f06966">vue</a> <a href="/tags/%E4%B8%80/" style="font-size: 10px; color: #f06966">一</a>
           </div>
         </div> -->
       </article>
@@ -615,10 +820,27 @@ wpac_init.push({widget: 'Rating', id: 23889});
       <div class="toc" style="background: none;"></div>
       <section class="post-squares nextprev">
         
+        
+        <div class="post-nepre half previous">
+          
+            <a href="/post/61197.html" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/nuxtjs.png"
+                  style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)"
+                  src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/nuxtjs.png">
+              </div>
+              <span class="label">Previous Post</span>
+              <div class="info">
+                <h3>Nuxt框架使用踩坑</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
           
           
-            <div class="post-nepre full next">
-              
+          
+          <div class="post-nepre half next">
+            
               <a href="/post/31766.html" rel="next">
                 <div class="background">
                   <img class="lazyload" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src=""
