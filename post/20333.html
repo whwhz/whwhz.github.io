@@ -569,10 +569,10 @@ export const pwdValidate = pwd => {
   }
 };
 </code></pre>
-<h3 id="浏览器类"><a href="#浏览器类" class="headerlink" title="浏览器类"></a>浏览器类</h3><pre class=" language-文件地址下载封装"><code class="language-文件地址下载封装">/* 相较于a标签直接下载可以附加参数, 可以用于权限控制中的请求下载
+<h3 id="浏览器类"><a href="#浏览器类" class="headerlink" title="浏览器类"></a>浏览器类</h3><pre class=" language-地址文件下载封装"><code class="language-地址文件下载封装">/* 相较于a标签直接下载可以附加参数, 可以用于权限控制中的请求下载
  * @param {String} 文件url
  * @param {Object} 请求参数
- * @returns {Boolean}
+ * @returns Null
  */
 export function downloadFile(downLoadurl, params = {}, method = "get") {
   // params = { ...params, token: store.getters.token };

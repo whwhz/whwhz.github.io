@@ -267,11 +267,42 @@
         <!--套嵌目录使用（主要为了支援评论）-->
         
         <div class="entry-content">
-          <h2 id="因公司技术栈是-Vue-Web-端业务中使用到了-Nuxtjs-框架能够很快速的建立-Vue-项目-能够使用自动化路由和服务端渲染-除此之外-NuxtJs-在我业务中踩了一些坑"><a href="#因公司技术栈是-Vue-Web-端业务中使用到了-Nuxtjs-框架能够很快速的建立-Vue-项目-能够使用自动化路由和服务端渲染-除此之外-NuxtJs-在我业务中踩了一些坑" class="headerlink" title="因公司技术栈是 Vue, Web 端业务中使用到了 Nuxtjs, 框架能够很快速的建立 Vue 项目, 能够使用自动化路由和服务端渲染, 除此之外 NuxtJs 在我业务中踩了一些坑"></a>因公司技术栈是 Vue, Web 端业务中使用到了 Nuxtjs, 框架能够很快速的建立 Vue 项目, 能够使用自动化路由和服务端渲染, 除此之外 NuxtJs 在我业务中踩了一些坑</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.nuxtjs.cn/guide/installation">https://www.nuxtjs.cn/guide/installation</a></p>
+          <h2 id="因公司技术栈是-Vue-Web-端业务中使用到了-Nuxtjs-框架能够很快速的建立-Vue-项目-能够使用自动化路由和服务端渲染-此篇记录在-NuxtJs-使用中也遇到的一些问题"><a href="#因公司技术栈是-Vue-Web-端业务中使用到了-Nuxtjs-框架能够很快速的建立-Vue-项目-能够使用自动化路由和服务端渲染-此篇记录在-NuxtJs-使用中也遇到的一些问题" class="headerlink" title="因公司技术栈是 Vue, Web 端业务中使用到了 Nuxtjs, 框架能够很快速的建立 Vue 项目, 能够使用自动化路由和服务端渲染, 此篇记录在 NuxtJs 使用中也遇到的一些问题"></a>因公司技术栈是 Vue, Web 端业务中使用到了 Nuxtjs, 框架能够很快速的建立 Vue 项目, 能够使用自动化路由和服务端渲染, 此篇记录在 NuxtJs 使用中也遇到的一些问题</h2><blockquote>
+<p>NuxtJs: <a target="_blank" rel="noopener" href="https://www.nuxtjs.cn/guide/installation">https://www.nuxtjs.cn/guide/installation</a><br>Env: node^14.15.4 &nbsp; npm^6.14.10 &nbsp; nuxt^2.14.6 &nbsp; vue^2.6.12</p>
 </blockquote>
 <ol>
-<li>路由</li>
+<li><p>路由嵌套<br>在自动路由中, 要处理嵌套路由需要注意文件位置和文件夹的命名, 文档中也很清楚</p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241832.png">
+
+<p>根据图示配置二级路由没有问题, 但项目中有这二级菜单嵌套路由的场景, 根据文档中来配置只能同时显示最后一级路由的内容,达不到菜单切换的目的</p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241833.png">
+
+<p>可以看到, 父 page 并没有一起渲染出来</p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241835.png">
+
+<p>此时把文件结构修改一下, 可以很方便的达到效果 😈</p>
+<pre><code>-| pages/                           -| pages/
+--| static/                         --| static.vue
+----| index.vue         &gt; &gt; &gt;       --| static/
+----| main.vue                      ----| main.vue</code></pre>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241834.png">
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>插件使用<br>由于配置开启了 ssr 模式, 所以在直接引入使用一些操作 dom 元素的插件时, 会有 <code>error: window/document is not defined</code> 等等报错, 其实这种问题是由于服务端渲染时不存在 window 对象导致<br>可以在 <code>nuxt.config / plugins</code>引入时设置设置 <code>ssr: false</code> 来解决</p>
+<p>但是在我项目中还使用到了 <code>JSEncrypt</code> 这个库来进行数据加密, 上面方法起不到作用,<br>借鉴网络上的方法例如引入前定义 <code>global.window/document/navigator</code>等, 还会有其他意想不到的问题 -_-||, 这些问题都是 Nuxt 的特性导致, 我是采用在加密函数头部进行环境判断来简单应付了一下, 竟然不报错了 😅 (好像还可以通过 node 的 jsdom 来处理)</p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241836.png">
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>请求代理/全局样式</p>
+<p>在 Nuxt 中想要使用请求代理需要先安装 <code>@nuxtjs/axios || @nuxtjs/proxy</code> 之后再 <code>nuxt.config / modules</code> 进行引入然后配置, 之后的 <code>proxy</code> 就跟 vue 项目中的一样了<br>全局 css 同理, 先引入<code>@nuxtjs/style-resources</code> 之后在 <code>styleResources</code>中引入文件即可, 如果引入 css 预处理器要先进行相应 loader 的安装</p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241838.png">
+</li>
 </ol>
 
         </div>
