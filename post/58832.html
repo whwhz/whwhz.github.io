@@ -7,7 +7,7 @@
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/c8f13bc8.js","daovoice")</script>
   
-  <title itemprop="name">Tag: 一 | Whwhz</title>
+  <title itemprop="name">ES2017 ~ ES2020新特性 | Whwhz</title>
   
     <link rel="shortcut icon" href="/images/favicon.ico">
   
@@ -205,79 +205,272 @@
 
       
       <!-- body -->
-      
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/cungudafa/cdn/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
 <div class="pattern-center-blank"></div>
-<div class="pattern-center ">
-  <div class="pattern-attachment-img">
-    <img src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="一.img" class="lazyload" onerror="imgError(this,3)" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+
+<div class="pattern-center single-center">
+  <!-- 有配图默认渲染第一张 -->
+  <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/es2020.jpg);"
+    src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/es2020.jpg">
   </div>
-  <header class="pattern-header ">
-    <h1 class="cat-title">一</h1>
-    <br>
-    <span class="post-meta-item-icon">
-      <i class="iconfont icon-attention"></i>
-    </span>
-    <span class="post-meta-item-text"><span id="busuanzi_value_page_pv"> </span>
-    </span>
+  <header class="pattern-header single-header">
+    <h1 class="entry-title">ES2017 ~ ES2020新特性</h1>
+    <p class="entry-census">
+      
+      
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar"></i>
+        </span>
+        <span class="post-meta-item-text"> 2021-1-18 </span>
+      </span>
+      <span class="bull">
+        ·</span>
+      <!-- 浏览数显示 -->
+      <span class="post-meta-item" >
+        <span class="post-meta-item-icon">
+          <i class="iconfont icon-attention"></i>
+        </span>
+        <span class="post-meta-item-text">本文共<span id="busuanzi_value_page_pv"> </span>次阅读
+        </span>
+      </span>
+      <span class="bull">
+        ·</span>
+      <!-- 字数统计-->
+      <span class="post-meta-item" >
+
+        
+      </span>
+      <span class="bull">
+        ·</span>
+      <!-- 评论数显示 -->
+      <!-- <span class="post-meta-item" >
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              </span class="post-meta-item-text">
+                <span class="valine-comment-count" data-xid="/58832"> </span>
+              </span>
+          </span> -->
+    </p>
   </header>
 </div>
+
 <div id="content" class="site-content">
   <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
-      
-    <!-- 置顶文章 -->
-    
-      
-    
-    <!-- 首页默认取最最新文章集 -->
-    
-      <!-- 其余文章 -->
-      
-        <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/post/31766.html">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
+      <article id="post-1"
+        class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content">  -->
+        <!--套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h2 id="本文总结了一些ES7之后的新语法-内容大多抄录于网络"><a href="#本文总结了一些ES7之后的新语法-内容大多抄录于网络" class="headerlink" title="本文总结了一些ES7之后的新语法, 内容大多抄录于网络"></a>本文总结了一些ES7之后的新语法, 内容大多抄录于网络</h2><h3 id="包含检测-Array-String-prototype-includes"><a href="#包含检测-Array-String-prototype-includes" class="headerlink" title="包含检测 Array/String.prototype.includes()"></a>包含检测 Array/String.prototype.includes()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// 判断字符串/数组是否包含指定元素, 第二个参数为检索起始位置, 返回值为 true/false
+  Array.prototype.includes(searchElement, fromIndex)</code></pre>
+<h3 id="幂运算符号"><a href="#幂运算符号" class="headerlink" title="幂运算符号 **"></a>幂运算符号 **</h3><pre class=" language-JavaScript"><code class="language-JavaScript">x:Number ** y:Number
+相当于
+Math.pow(x, y)</code></pre>
+<h3 id="字符串补充-String-prototype-padStart-padEnd-trimStart-trimEnd"><a href="#字符串补充-String-prototype-padStart-padEnd-trimStart-trimEnd" class="headerlink" title="字符串补充 String.prototype.padStart() / padEnd() / trimStart() / trimEnd()"></a>字符串补充 String.prototype.padStart() / padEnd() / trimStart() / trimEnd()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// padStart/padEnd用于填充字符串直到指定长度，两个参数，第一个参数为目标长度，第二个字符串为用于填充的字符串
+
+let str = '123456789'
+
+let res = str.padStart(14, '456') // 在开始填充
+let res2 = str.padEnd(14, '456') // 在结束填充
+
+console.log(res) // 45645123456789
+console.log(res2) // 12345678945645</code></pre>
+<pre class=" language-JavaScript"><code class="language-JavaScript">//trimStart()/trimEnd() 相当于 String.prototype.trim()的细分使用
+const string = ' Hello World! ';
+string.trimStart(); // 'Hello World! '
+string.trimEnd(); // ' Hello World!'</code></pre>
+<h3 id="对象扩展-Object-keys-values-entries-fromEntries"><a href="#对象扩展-Object-keys-values-entries-fromEntries" class="headerlink" title="对象扩展 Object.keys() / values() / entries() / fromEntries()"></a>对象扩展 Object.keys() / values() / entries() / fromEntries()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// 处理对象 返回值：一个对象的所有可枚举属性的键的数组
+  let person = {name:"张三",age:99,address:"北京",getName:function(){}};
+  console.log(Object.keys(person)); // ["name", "age", "address", "getName"]
+
+// 处理数组 返回值：数组的索引值数组
+  let arr = [1,2,3,4,5,6];
+  console.log(Object.keys(arr));  //["0", "1", "2", "3", "4", "5"]
+
+// 处理字符串 返回值：数组的索引值数组
+  let str = "Hello,world";
+  console.log(Object.keys(str));  //["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]</code></pre>
+<pre class=" language-JavaScript"><code class="language-JavaScript">// 返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历属性的键值, 参数不是对象，Object.values会先将其转为对象
+  let obj = {
+    name: 'Cc',
+    age: '99',
+    job: 'web'
+  }
+  console.log(Object.values(obj)) ["Cc", "99", "web"]</code></pre>
+<pre class=" language-JavaScript"><code class="language-JavaScript">// 方法返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历属性的键值对数组
+  let obj = {
+    name: 'Cc',
+    age: '99',
+    job: 'web'
+  }
+  console.log(Object.entries(obj)) // [["name", "Cc"]["age", "99"]["job", "web"]]</code></pre>
+<pre class=" language-JavaScript"><code class="language-JavaScript">// 方法返回一个对象，成员是Object.entries的键值对数组
+let entries = [["name", "Cc"]];
+console.log(Object.fromEntries(entries)); // {name: "Cc"}</code></pre>
+<h3 id="异步迭代-Async-For"><a href="#异步迭代-Async-For" class="headerlink" title="异步迭代 Async For"></a>异步迭代 Async For</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// 在for循环中支持async/await修饰 来循环存在异步的队列
+function getPromise (time) {
+  return new Promise((resovle) => {
+    setTimeout(() => {
+      resovle(time)
+    }, time)
+  })
+}
+
+const arr = [getPromise(1000), getPromise(2000), getPromise(3000)];
+
+let main = async () => {
+  for await (let item of arr) {
+    console.log(item)   // 1000 2000 3000
+  }
+}
+// 不使用async/await的话for循环会返回三个Promise对象</code></pre>
+<h3 id="数组扁平展开-Array-prototype-flat-Array-prototype-flatMap"><a href="#数组扁平展开-Array-prototype-flat-Array-prototype-flatMap" class="headerlink" title="数组扁平展开 Array.prototype.flat() / Array.prototype.flatMap()"></a>数组扁平展开 Array.prototype.flat() / Array.prototype.flatMap()</h3><pre class=" language-JavaScript"><code class="language-JavaScript"> // flat() 通过传入层级 默认为1 来展开多维数组
+ [1, 2, [3, 4]].flat(); // [ 1, 2, 3, 4 ]
+ [1, 2, [3, 4, [5, 6]]].flat(2); // [ 1, 2, 3, 4, 5, 6 ]</code></pre>
+<h3 id="空值合并运算符-‘-’"><a href="#空值合并运算符-‘-’" class="headerlink" title="空值合并运算符 ‘??’"></a>空值合并运算符 ‘??’</h3><pre class=" language-JavaScript"><code class="language-JavaScript">空值合并运算符 ?? 提供了一种简短的语法，用来获取列表中第一个“已定义”的变量
+
+a ?? b 的结果是：
+a，如果 a 不是 null 或 undefined，
+b，其他情况
+
+所以，value = a ?? b 是下面这个表达式的简写：如果a是已定义的则返回a的值
+
+value = (a !== null && a !== undefined) ? a : b;
+
+区别于 || 返回第一个 真 值。
+      ?? 返回第一个 已定义的值。</code></pre>
+
         </div>
-        <img width="150" height="150" src=""
-          class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="">
-      </a>
-    </div>
-    <h1 class="entry-title">
-      <a href="/post/31766.html">
-        ones</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-      2021-1-7</div>
-    <p>
-      ones pro plus max</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/post/31766.html">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-       
-    
 
+        <!-- .entry-content -->
+        <div class="single-reward">
+          <div class="reward-open">赏
+            <div class="reward-main">
+              <ul class="reward-row">
+                <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/alipay.jpeg"></li>
+                <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/wechat.jpeg"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent">
+        </div> -->
+        <!-- 评分 -->
+        <div class="single-reward">
+          
+          <!-- 五星评分 -->
+<!-- <div id="wpac-rating"></div> -->
+<!-- <script type="text/javascript">
+wpac_init = window.wpac_init || [];
+wpac_init.push({widget: 'Rating', id: 23889});
+(function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'https://embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+})();
+</script> -->
+<!-- <a target="_blank" rel="noopener" href="https://widgetpack.com" class="wpac-cr">Star Rating WIDGET PACK</a> -->
+          
+        </div>
+        <!-- 自定义署名方式 -->
+        <!-- <footer class="post-footer"> -->
+          <!-- <div class="post-lincenses" style="color: #ff9966;">
+            欢迎转载，转载时请注明来源哦！
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" style="color: #ff9966;" target="_blank"
+              rel="nofollow">
+              <i class="fa fa-creative-commons" aria-hidden="true"></i>ncsa4.0</a>
+          </div> -->
+          <!-- 
+          <div class="post-tags" style="color: #a39391">
+            <span><i class="fa fa-tags"></i>
+              
+              <a href="/tags/JavaScript/" style="color: #716e77;">JavaScript<em>·</em></a>
+              
+            </span>
+            <span>
+              <i class="iconfont icon-file"></i>
+              
+            </span>
+          </div>
+          
+          <div class="post-share" >
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div> -->
+        <!-- </footer> -->
+        <!-- .entry-footer -->
+        <!-- <div class="tag-cloud">
+          <div class="tag-cloud-title">
+          </div>
+          <div class="tag-cloud-tags">
+            <a href="/tags/JavaScript/" style="font-size: 20px; color: #39bae8">JavaScript</a> <a href="/tags/vue/" style="font-size: 10px; color: #f06966">vue</a>
+          </div>
+        </div> -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+          
+            <div class="post-nepre full next">
+              
+              <a href="/post/61197.html" rel="next">
+                <div class="background">
+                  <img class="lazyload" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/nuxtjs.png"
+                    style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"
+                    onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/nuxtjs.png">
+                </div>
+                <span class="label">Next Post</span>
+                <div class="info">
+                  <h3>Nuxt框架使用踩坑</h3>
+                  <hr>
+                </div>
+              </a>
+            </div>
+            
+      </section>
+      <!-- 加密文章隐藏评论 -->
+      <!-- <section class="comment" >
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk-container" class="comment"></div> 
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="/js/md5.min.js"></script>
+<script type="text/javascript">
+	var gitalk = new Gitalk({
+  	clientID: '0ef89257a5aaf8e30d52',
+  	clientSecret: '046080d6bfacf6607a3c48c349d945069f28ae72',
+  	repo: 'cungudafa.github.io',
+  	owner: 'cungudafa',
+	admin: ['cungudafa'],
+	distractionFreeMode: 'true',
+    id: md5(location.pathname)
+})
+gitalk.render('gitalk-container') 
+</script>
 
-
-      <div class="clearer">
-      </div>
-    </main>
-    <!--  -->
-    
-  </div>
+      </section> -->
+      <!-- 加密文章隐藏作者信息 -->
+      <!--  -->
+    </main><!-- #main -->
+  </div><!-- #primary -->
 </div>
+
+
+<!--评论配置-->
+
+
+
       <!-- body.end -->
     </div>
     <!-- search -->    
