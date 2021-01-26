@@ -75,7 +75,7 @@
   </script>
 <meta name="generator" content="Hexo 5.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head> 
+</head> 
 
 <body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
   <!-- Dynamic sliders -->
@@ -267,25 +267,35 @@
         <!--套嵌目录使用（主要为了支援评论）-->
         
         <div class="entry-content">
-          <h2 id="本文总结了一些ES7之后的新语法-内容大多抄录于网络"><a href="#本文总结了一些ES7之后的新语法-内容大多抄录于网络" class="headerlink" title="本文总结了一些ES7之后的新语法, 内容大多抄录于网络"></a>本文总结了一些ES7之后的新语法, 内容大多抄录于网络</h2><h3 id="包含检测-Array-String-prototype-includes"><a href="#包含检测-Array-String-prototype-includes" class="headerlink" title="包含检测 Array/String.prototype.includes()"></a>包含检测 Array/String.prototype.includes()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// 判断字符串/数组是否包含指定元素, 第二个参数为检索起始位置, 返回值为 true/false
-  Array.prototype.includes(searchElement, fromIndex)</code></pre>
-<h3 id="幂运算符号"><a href="#幂运算符号" class="headerlink" title="幂运算符号 **"></a>幂运算符号 **</h3><pre class=" language-JavaScript"><code class="language-JavaScript">x:Number ** y:Number
-相当于
-Math.pow(x, y)</code></pre>
-<h3 id="字符串补充-String-prototype-padStart-padEnd-trimStart-trimEnd"><a href="#字符串补充-String-prototype-padStart-padEnd-trimStart-trimEnd" class="headerlink" title="字符串补充 String.prototype.padStart() / padEnd() / trimStart() / trimEnd()"></a>字符串补充 String.prototype.padStart() / padEnd() / trimStart() / trimEnd()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// padStart/padEnd用于填充字符串直到指定长度，两个参数，第一个参数为目标长度，第二个字符串为用于填充的字符串
+          <h2 id="本文总结了一些-ES7-之后的新语法-内容大多抄录于网络"><a href="#本文总结了一些-ES7-之后的新语法-内容大多抄录于网络" class="headerlink" title="本文总结了一些 ES7 之后的新语法, 内容大多抄录于网络"></a>本文总结了一些 ES7 之后的新语法, 内容大多抄录于网络</h2><h3 id="包含检测-Array-String-prototype-includes"><a href="#包含检测-Array-String-prototype-includes" class="headerlink" title="包含检测 Array/String.prototype.includes()"></a>包含检测 Array/String.prototype.includes()</h3><p><code>判断字符串/数组是否包含指定元素, 第二个参数为检索起始位置, 返回值为 true/false</code></p>
+<pre class=" language-JavaScript"><code class="language-JavaScript">
+  Array.prototype.includes(searchElement, fromIndex)
+</code></pre>
+<h3 id="幂运算符号"><a href="#幂运算符号" class="headerlink" title="幂运算符号 **"></a>幂运算符号 **</h3><pre class=" language-JavaScript"><code class="language-JavaScript">  x:Number ** y:Number
+  相当于
+  Math.pow(x, y)</code></pre>
+<h3 id="字符串补充-String-prototype-padStart-padEnd-trimStart-trimEnd-replaceAll"><a href="#字符串补充-String-prototype-padStart-padEnd-trimStart-trimEnd-replaceAll" class="headerlink" title="字符串补充 String.prototype.padStart() / padEnd() / trimStart() / trimEnd() / replaceAll()"></a>字符串补充 String.prototype.padStart() / padEnd() / trimStart() / trimEnd() / replaceAll()</h3><p><code>padStart/padEnd</code>用于填充字符串直到指定长度，两个参数，第一个参数为目标长度，第二个字符串为用于填充的字符串</p>
+<pre class=" language-JavaScript"><code class="language-JavaScript">
+  let str = '123456789'
 
-let str = '123456789'
+  let res = str.padStart(14, '456') // 在开始填充
+  let res2 = str.padEnd(14, '456') // 在结束填充
 
-let res = str.padStart(14, '456') // 在开始填充
-let res2 = str.padEnd(14, '456') // 在结束填充
-
-console.log(res) // 45645123456789
-console.log(res2) // 12345678945645</code></pre>
-<pre class=" language-JavaScript"><code class="language-JavaScript">//trimStart()/trimEnd() 相当于 String.prototype.trim()的细分使用
-const string = ' Hello World! ';
-string.trimStart(); // 'Hello World! '
-string.trimEnd(); // ' Hello World!'</code></pre>
-<h3 id="对象扩展-Object-keys-values-entries-fromEntries"><a href="#对象扩展-Object-keys-values-entries-fromEntries" class="headerlink" title="对象扩展 Object.keys() / values() / entries() / fromEntries()"></a>对象扩展 Object.keys() / values() / entries() / fromEntries()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// 处理对象 返回值：一个对象的所有可枚举属性的键的数组
+  console.log(res) // 45645123456789
+  console.log(res2) // 12345678945645</code></pre>
+<p><code>trimStart()/trimEnd()</code> 相当于 <code>String.prototype.trim()</code>的细分使用</p>
+<pre class=" language-JavaScript"><code class="language-JavaScript">
+  const string = ' Hello World! ';
+  string.trimStart(); // 'Hello World! '
+  string.trimEnd(); // ' Hello World!'
+</code></pre>
+<p><code>replaceAll()</code> 方法是基于 <code>replace(/\!/g, '')</code> 方法的延伸</p>
+<pre class=" language-JavaScript"><code class="language-JavaScript">
+  const string = '😃!😯!😛';
+  console.log(string.replaceAll('!', '👿')) // 😃👿😯👿😛
+</code></pre>
+<h3 id="对象扩展-Object-keys-values-entries-fromEntries"><a href="#对象扩展-Object-keys-values-entries-fromEntries" class="headerlink" title="对象扩展 Object.keys() / values() / entries() / fromEntries()"></a>对象扩展 Object.keys() / values() / entries() / fromEntries()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">
+// 处理对象 返回值：一个对象的所有可枚举属性的键的数组
   let person = {name:"张三",age:99,address:"北京",getName:function(){}};
   console.log(Object.keys(person)); // ["name", "age", "address", "getName"]
 
@@ -295,7 +305,8 @@ string.trimEnd(); // ' Hello World!'</code></pre>
 
 // 处理字符串 返回值：数组的索引值数组
   let str = "Hello,world";
-  console.log(Object.keys(str));  //["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]</code></pre>
+  console.log(Object.keys(str));  //["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+</code></pre>
 <pre class=" language-JavaScript"><code class="language-JavaScript">// 返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历属性的键值, 参数不是对象，Object.values会先将其转为对象
   let obj = {
     name: 'Cc',
@@ -311,40 +322,94 @@ string.trimEnd(); // ' Hello World!'</code></pre>
   }
   console.log(Object.entries(obj)) // [["name", "Cc"]["age", "99"]["job", "web"]]</code></pre>
 <pre class=" language-JavaScript"><code class="language-JavaScript">// 方法返回一个对象，成员是Object.entries的键值对数组
-let entries = [["name", "Cc"]];
-console.log(Object.fromEntries(entries)); // {name: "Cc"}</code></pre>
+  let entries = [["name", "Cc"]];
+  console.log(Object.fromEntries(entries)); // {name: "Cc"}</code></pre>
 <h3 id="异步迭代-Async-For"><a href="#异步迭代-Async-For" class="headerlink" title="异步迭代 Async For"></a>异步迭代 Async For</h3><pre class=" language-JavaScript"><code class="language-JavaScript">// 在for循环中支持async/await修饰 来循环存在异步的队列
-function getPromise (time) {
-  return new Promise((resovle) => {
-    setTimeout(() => {
-      resovle(time)
-    }, time)
-  })
-}
-
-const arr = [getPromise(1000), getPromise(2000), getPromise(3000)];
-
-let main = async () => {
-  for await (let item of arr) {
-    console.log(item)   // 1000 2000 3000
+  function getPromise (time) {
+    return new Promise((resovle) => {
+      setTimeout(() => {
+        resovle(time)
+      }, time)
+    })
   }
-}
+
+  const arr = [getPromise(1000), getPromise(2000), getPromise(3000)];
+
+  let main = async () => {
+    for await (let item of arr) {
+      console.log(item)   // 1000 2000 3000
+    }
+  }
 // 不使用async/await的话for循环会返回三个Promise对象</code></pre>
-<h3 id="数组扁平展开-Array-prototype-flat-Array-prototype-flatMap"><a href="#数组扁平展开-Array-prototype-flat-Array-prototype-flatMap" class="headerlink" title="数组扁平展开 Array.prototype.flat() / Array.prototype.flatMap()"></a>数组扁平展开 Array.prototype.flat() / Array.prototype.flatMap()</h3><pre class=" language-JavaScript"><code class="language-JavaScript"> // flat() 通过传入层级 默认为1 来展开多维数组
+<h3 id="Promise-race-any"><a href="#Promise-race-any" class="headerlink" title="Promise.race / any"></a>Promise.race / any</h3><p><code>Promise.race</code> 则是返回最先成功的实例</p>
+<pre class=" language-JavasCript"><code class="language-JavasCript">  let p1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('p1p1')
+    },1000)
+  })
+  let p2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject('p2p2')
+    }, 500)
+  })
+  Promise.race([p1, p2]).then((result) => {
+    console.log(result)  // p1p1
+  }).catch((error) => {
+    console.log(error)
+  })
+</code></pre>
+<p><code>Promise.any</code> 返回给定实例只要有一例成功 则返回第一条实例作为返回值, 与<code>Promise.race</code>不同, 它会在所有实例失败之后才返回失败的值</p>
+<pre class=" language-JavasCript"><code class="language-JavasCript">
+ let p3 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('p3p3')
+    },1000)
+  })
+  let p4 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject('p4p4')
+    }, 500)
+  })
+  let p5 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject('p5p5')
+    }, 500)
+  })
+  try {
+    const first = await Promise.any([p3, p4, p5]);
+    console.log('first',first) // first p3p3
+  } catch (error) {
+    console.log('error',error)
+  }
+</code></pre>
+<h3 id="数组扁平展开-Array-prototype-flat-Array-prototype-flatMap"><a href="#数组扁平展开-Array-prototype-flat-Array-prototype-flatMap" class="headerlink" title="数组扁平展开 Array.prototype.flat() / Array.prototype.flatMap()"></a>数组扁平展开 Array.prototype.flat() / Array.prototype.flatMap()</h3><pre class=" language-JavaScript"><code class="language-JavaScript">
+ // flat() 通过传入层级 默认为1 来展开多维数组
  [1, 2, [3, 4]].flat(); // [ 1, 2, 3, 4 ]
- [1, 2, [3, 4, [5, 6]]].flat(2); // [ 1, 2, 3, 4, 5, 6 ]</code></pre>
-<h3 id="空值合并运算符-‘-’"><a href="#空值合并运算符-‘-’" class="headerlink" title="空值合并运算符 ‘??’"></a>空值合并运算符 ‘??’</h3><pre class=" language-JavaScript"><code class="language-JavaScript">空值合并运算符 ?? 提供了一种简短的语法，用来获取列表中第一个“已定义”的变量
+ [1, 2, [3, 4, [5, 6]]].flat(2); // [ 1, 2, 3, 4, 5, 6 ]
+</code></pre>
+<h3 id="空值合并运算符-‘-’"><a href="#空值合并运算符-‘-’" class="headerlink" title="空值合并运算符 ‘??’"></a>空值合并运算符 ‘??’</h3><pre><code>  空值合并运算符 ?? 提供了一种简短的语法，用来获取列表中第一个“已定义”的变量
 
-a ?? b 的结果是：
-a，如果 a 不是 null 或 undefined，
-b，其他情况
+  a ?? b 的结果是：
+  a，如果 a 不是 null 或 undefined，
+  b，其他情况
 
-所以，value = a ?? b 是下面这个表达式的简写：如果a是已定义的则返回a的值
+  所以，value = a ?? b 是下面这个表达式的简写：如果a是已定义的则返回a的值
 
-value = (a !== null && a !== undefined) ? a : b;
+  value = (a !== null &amp;&amp; a !== undefined) ? a : b;
 
-区别于 || 返回第一个 真 值。
-      ?? 返回第一个 已定义的值。</code></pre>
+  区别于 || 返回第一个 真 值。
+        ?? 返回第一个 已定义的值。</code></pre>
+<h3 id="逻辑赋值运算符-数字分隔符"><a href="#逻辑赋值运算符-数字分隔符" class="headerlink" title="逻辑赋值运算符 / 数字分隔符"></a>逻辑赋值运算符 / 数字分隔符</h3><p>逻辑赋值运算符结合了 逻辑运算符 和 赋值表达式。逻辑赋值运算符有两种：<br><code>或等于（||=）</code>, <code>且等于（&amp;&amp;=）</code></p>
+<pre><code>
+  a ||= b  等同于 a || (a = b);
+  a &amp;&amp;= b  等同于 a &amp;&amp; (a = b);
+</code></pre>
+<p>数字分隔符将数字进行分组, 提高可读性</p>
+<pre><code>
+  1_000_000_000  //  1000000000
+  1e10_000  //  Infinity
+  123_4.56  // 1234.56
+</code></pre>
 
         </div>
 

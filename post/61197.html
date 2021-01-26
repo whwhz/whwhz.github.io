@@ -75,7 +75,7 @@
   </script>
 <meta name="generator" content="Hexo 5.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head> 
+</head> 
 
 <body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
   <!-- Dynamic sliders -->
@@ -286,27 +286,49 @@
 ----| index.vue         &gt; &gt; &gt;       --| static/
 ----| main.vue                      ----| main.vue</code></pre>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241834.png">
-
-
 </li>
-</ol>
-<ol start="2">
 <li><p>插件使用<br>由于配置开启了 ssr 模式, 所以在直接引入使用一些操作 dom 元素的插件时, 会有 <code>error: window/document is not defined</code> 等等报错, 其实这种问题是由于服务端渲染时不存在 window 对象导致<br>可以在 <code>nuxt.config / plugins</code>引入时设置设置 <code>ssr: false</code> 来解决</p>
 <p>但是在我项目中还使用到了 <code>JSEncrypt</code> 这个库来进行数据加密, 上面方法起不到作用,<br>借鉴网络上的方法例如引入前定义 <code>global.window/document/navigator</code>等, 还会有其他意想不到的问题 -_-||, 这些问题都是 Nuxt 的特性导致, 我是采用在加密函数头部进行环境判断来简单应付了一下, 竟然不报错了 😅 (好像还可以通过 node 的 jsdom 来处理)</p>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241836.png">
 
-<p>同样在使用需要操作DOM元素的插件时, 不想要全局引入也可以通过先判断在引入的形式, 这里使用到了二维码插件qrcode</p>
+<p>同样在使用需要操作 DOM 元素的插件时, 不想要全局引入也可以通过先判断在引入的形式, 这里使用到了二维码插件 qrcode</p>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241839.png">
-
-
 </li>
-</ol>
-<ol start="3">
 <li><p>请求代理/全局样式</p>
 <p>在 Nuxt 中想要使用请求代理需要先安装 <code>@nuxtjs/axios || @nuxtjs/proxy</code> 之后再 <code>nuxt.config / modules</code> 进行引入然后配置, 之后的 <code>proxy</code> 就跟 vue 项目中的一样了<br>全局 css 同理, 先引入<code>@nuxtjs/style-resources</code> 之后在 <code>styleResources</code>中引入文件即可, 如果引入 css 预处理器要先进行相应 loader 的安装</p>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241838.png">
 </li>
+<li><p>不同环境配置</p>
+<p>Nuxt 本身提供了配置项在 <code>nuxt.config / env</code> 可供配置</p>
+<p><code>env: { BASE_URL: process.env.BASE_URL, NODE_ENV: process.env.NODE_ENV }</code><br>还可以在打包时借助打包命令设置环境变量 <strong>注: 在非 Mac 系统下 直接设置 NODE_ENV 会报错, 需要借助<code>cross-env</code>来进行</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241840.png">
+
+<p>此时已经可以根据环境变量来设置不同的请求地址了</p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241841.png">
+</li>
+<li><p>服务器部署</p>
+</li>
 </ol>
+<ul>
+<li><p>第一次部署服务器需要先在服务器测试 <code>node</code> 环境是否可用,<br>如果没有 <code>node</code> 环境, 可以使用 <code>yum</code> 命令来安装, 不过这种形式一般版本较低, 所有尽量直接用压缩包的形式解压<code>tar -xvf node-v14.15.4-linux-x64.tar</code>安装</p>
+</li>
+<li><p>解压之将 <code>node/bin</code> (这里的 node 指解压之后的文件夹简写) 下面的 <code>node / npm</code> 两个命令设置为全局命令, 可以通过</p>
+<pre><code> n -s /opt/sxsmk_web/node/bin/node /usr/local/bin/node
+ n -s /opt/sxsmk_web/node/bin/npm /usr/local/bin/npm</code></pre>
+<p>此时可以通过 <code>node -v</code> 来验证是否成功, 当然也可以直接在 <code>etc/profile</code> 文件中写入环境变量来配置</p>
+</li>
+<li><p>环境配置之后, 将 <code>Nuxt</code> 打包生成的文件 <code>Nuxt.config.js / package.json / .nuxt / static</code> 等文件/文件夹 上传至服务器并安装依赖 <code>npm i</code></p>
+</li>
+<li><p>利用 <code>pm2</code> (node 的进程管理器) 来启动项目即可, 以下为 pm2 常用命令</p>
+<pre><code>
+   pm2 start npm --watch --name "webssr" -- run start // 启动并监控一个进程
+   pm2 list  // 查看全部进程
+   pm2 info 0 // 查看一个进程的具体信息 后面是进程id
+   pm2 stop/restart/reload/delete 0/all // 停止/开启/重载/删除 某个/全部进程
+   pm2 logs [--raw] // 查看日志
+</code></pre>
+</li>
+</ul>
 
         </div>
 
