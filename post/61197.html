@@ -306,7 +306,7 @@
 <p>此时已经可以根据环境变量来设置不同的请求地址了</p>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241841.png">
 </li>
-<li><p>url 转义<br>在使用 <code>vue-router</code> 编程式路由时, 在 <code>nuxt</code> 中推荐使用<code>params</code>进行传参处理, 如果使用到 <code>query</code> 进行多个参数查询时, 如果不进行转义在刷新页面/重定向页面时时会出现识别不了的情况如下图<br>此时的 url 为: <code>/check-result?type=result&amp;refund_no=440376&amp;state=3</code></p>
+<li><p>url 转义<br>在使用 <code>vue-router</code> 编程式路由时, 在 <code>nuxt</code> 中推荐使用<code>params</code>进行传参处理, 如果使用到 <code>query</code> 进行多个参数查询时, 如果不进行转义在刷新页面/重定向页面时会出现识别不了的情况如下图<br>此时的 url 为: <code>/check-result?contract_no=440376&amp;type=result&amp;form=contract&amp;state=3</code></p>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241842.png">
 
 <p>因为在服务器渲染的的机制, url 参数中存在 <code>=</code> 等符号时服务器端可能无法获得正确的参数值, 并且直接重定向到错误页面, 所以需要对 url 参数转义处理, 以下为处理的函数, 可以直接挂在到<code>vue</code> 原型之上便于全局使用</p>
@@ -377,14 +377,14 @@ export function param2Obj(url) {
 </li>
 <li><p>服务器部署</p>
 <ul>
-<li>第一次部署服务器需要先在服务器测试 <code>node</code> 环境是否可用,<br>如果没有 <code>node</code> 环境, 可以使用 <code>yum</code> 命令来安装, 不过这种形式一般版本较低, 所有尽量直接用压缩包的形式解压<code>tar -xvf node-v14.15.4-linux-x64.tar</code>安装</li>
+<li>第一次部署服务器需要先在服务器验证 <code>node</code> 环境是否可用,<br>如果没有 <code>node</code> 环境, 可以使用 <code>yum</code> 命令来安装, 不过这种形式一般版本较低, 所有尽量直接用压缩包的形式解压<code>tar -xvf node-v14.15.4-linux-x64.tar</code>安装</li>
 <li>解压之将 <code>node/bin</code> (这里的 node 指解压之后的文件夹简写) 下面的 <code>node / npm</code> 两个命令设置为全局命令, 可以通过</li>
 </ul>
 <pre><code>   ln -s /opt/sxsmk_web/node/bin/node /usr/local/bin/node
    ln -s /opt/sxsmk_web/node/bin/npm /usr/local/bin/npm</code></pre>
 <p>此时可以通过 <code>node -v</code> 来验证是否成功, 当然也可以直接在 <code>etc/profile</code> 文件中写入环境变量来配置</p>
 <ul>
-<li>环境配置之后, 将 <code>Nuxt</code> 打包生成的文件 <code>Nuxt.config.js / package.json / .nuxt / static</code> 等文件/文件夹 上传至服务器并安装依赖 <code>npm i</code></li>
+<li>环境配置之后, 将 <code>Nuxt</code> 打包生成的文件 <code>Nuxt.config.js / package.json / .nuxt / static</code> 等文件/文件夹 上传至服务器并安装依赖</li>
 <li>利用 <code>pm2</code> (node 的进程管理器) 来启动项目即可, 以下为 pm2 常用命令</li>
 </ul>
 <pre><code>
