@@ -49,8 +49,8 @@
     mashiro_option.email_name = "";
     mashiro_option.cookie_version_control = "";
     mashiro_option.qzone_autocomplete = false;
-    mashiro_option.site_name = "whwhz光影教会";
-    mashiro_option.author_name = "光影教会";
+    mashiro_option.site_name = "whwhzzhuowh";
+    mashiro_option.author_name = "zhuowh";
     mashiro_option.site_url = "";
     mashiro_option.v_appId = "U5VwYYeYlmI7C8UuoWxHrDBz-MdYXbMMI";//
     mashiro_option.v_appKey = "SFxC9o4DBWIBfhIBOTHlaXGf";//
@@ -283,8 +283,8 @@
 <p>此时把文件结构修改一下, 可以很方便的达到效果 😈</p>
 <pre><code>-| pages/                           -| pages/
 --| static/                         --| static.vue
-----| index.vue         &gt; &gt; &gt;       --| static/
-----| main.vue                      ----| main.vue</code></pre>
+---| index.vue         &gt; &gt; &gt;        --| static/
+---| main.vue                       ---| main.vue</code></pre>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241834.png">
 </li>
 <li><p>插件使用<br>由于配置开启了 ssr 模式, 所以在直接引入使用一些操作 dom 元素的插件时, 会有 <code>error: window/document is not defined</code> 等等报错, 其实这种问题是由于服务端渲染时不存在 window 对象导致<br>可以在 <code>nuxt.config / plugins</code>引入时设置设置 <code>ssr: false</code> 来解决</p>
@@ -306,18 +306,87 @@
 <p>此时已经可以根据环境变量来设置不同的请求地址了</p>
 <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241841.png">
 </li>
+<li><p>url 转义<br>在使用 <code>vue-router</code> 编程式路由时, 在 <code>nuxt</code> 中推荐使用<code>params</code>进行传参处理, 如果使用到 <code>query</code> 进行多个参数查询时, 如果不进行转义在刷新页面/重定向页面时时会出现识别不了的情况如下图<br>此时的 url 为: <code>/check-result?type=result&amp;refund_no=440376&amp;state=3</code></p>
+<img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/2020071114241842.png">
+
+<p>因为在服务器渲染的的机制, url 参数中存在 <code>=</code> 等符号时服务器端可能无法获得正确的参数值, 并且直接重定向到错误页面, 所以需要对 url 参数转义处理, 以下为处理的函数, 可以直接挂在到<code>vue</code> 原型之上便于全局使用</p>
+<pre><code>/**
+* @param {Array} actual
+* @returns {Array}
+*/
+export function cleanArray(actual) {
+   const newArray = [];
+   for (let i = 0; i &lt; actual.length; i++) {
+      if (actual[i]) {
+         newArray.push(actual[i]);
+      }
+   }
+   return newArray;
+}
+
+/**
+* @param {Object} json 对url参数进行编码
+* @returns {Array}
+*/
+export function param(json) {
+   if (!json) return "";
+   return cleanArray(
+      Object.keys(json).map(key =&gt; {
+         if (json[key] === undefined) return "";
+         return encodeURIComponent(`${key}=${json[key]}`);
+      })
+   ).join("&amp;");
+}
+
+/**
+* @param {string} url 解析获取url参数
+* @returns {Object}
+*/
+export function param2Obj(url) {
+   url = url || location.href;
+   const search = url.split("?")[1];
+   if (!search) {
+      return {};
+   }
+   return JSON.parse(
+      '{"' +
+         decodeURIComponent(search)
+         .replace(/"/g, '\\"')
+         .replace(/&amp;/g, '","')
+         .replace(/=/g, '":"')
+         .replace(/\+/g, " ") +
+         '"}'
+   );
+}
+</code></pre>
+<p>使用上传值就直接替代 <code>$router.push</code> 中的 <code>query</code>, 获取则使用 <code>param2Obj</code> 替换 <code>$route.query</code> 即可</p>
+<pre class=" language-JS"><code class="language-JS">   // 路由查询跳转
+    $router.push({
+      path: `./check-result?${$param({
+         contract_no: record.contract_no,
+         type: 'result',
+         form: 'contract',
+         state: record.contract_state,
+         audit_note: record.audit_note,
+      })}`,
+   })
+
+   // 查询参数获取
+   const { contract_no, state, audit_note, form, type } = this.$param2Obj();
+</code></pre>
+</li>
 <li><p>服务器部署</p>
 <ul>
-<li><p>第一次部署服务器需要先在服务器测试 <code>node</code> 环境是否可用,<br>如果没有 <code>node</code> 环境, 可以使用 <code>yum</code> 命令来安装, 不过这种形式一般版本较低, 所有尽量直接用压缩包的形式解压<code>tar -xvf node-v14.15.4-linux-x64.tar</code>安装</p>
-</li>
-<li><p>解压之将 <code>node/bin</code> (这里的 node 指解压之后的文件夹简写) 下面的 <code>node / npm</code> 两个命令设置为全局命令, 可以通过</p>
-<pre><code> n -s /opt/sxsmk_web/node/bin/node /usr/local/bin/node
- n -s /opt/sxsmk_web/node/bin/npm /usr/local/bin/npm</code></pre>
+<li>第一次部署服务器需要先在服务器测试 <code>node</code> 环境是否可用,<br>如果没有 <code>node</code> 环境, 可以使用 <code>yum</code> 命令来安装, 不过这种形式一般版本较低, 所有尽量直接用压缩包的形式解压<code>tar -xvf node-v14.15.4-linux-x64.tar</code>安装</li>
+<li>解压之将 <code>node/bin</code> (这里的 node 指解压之后的文件夹简写) 下面的 <code>node / npm</code> 两个命令设置为全局命令, 可以通过</li>
+</ul>
+<pre><code>   ln -s /opt/sxsmk_web/node/bin/node /usr/local/bin/node
+   ln -s /opt/sxsmk_web/node/bin/npm /usr/local/bin/npm</code></pre>
 <p>此时可以通过 <code>node -v</code> 来验证是否成功, 当然也可以直接在 <code>etc/profile</code> 文件中写入环境变量来配置</p>
-</li>
-<li><p>环境配置之后, 将 <code>Nuxt</code> 打包生成的文件 <code>Nuxt.config.js / package.json / .nuxt / static</code> 等文件/文件夹 上传至服务器并安装依赖 <code>npm i</code></p>
-</li>
-<li><p>利用 <code>pm2</code> (node 的进程管理器) 来启动项目即可, 以下为 pm2 常用命令</p>
+<ul>
+<li>环境配置之后, 将 <code>Nuxt</code> 打包生成的文件 <code>Nuxt.config.js / package.json / .nuxt / static</code> 等文件/文件夹 上传至服务器并安装依赖 <code>npm i</code></li>
+<li>利用 <code>pm2</code> (node 的进程管理器) 来启动项目即可, 以下为 pm2 常用命令</li>
+</ul>
 <pre><code>
    pm2 start npm --watch --name "webssr" -- run start // 启动并监控一个进程
    pm2 list  // 查看全部进程
@@ -325,8 +394,6 @@
    pm2 stop/restart/reload/delete 0/all // 停止/开启/重载/删除 某个/全部进程
    pm2 logs [--raw] // 查看日志
 </code></pre>
-</li>
-</ul>
 </li>
 </ol>
 
@@ -397,7 +464,7 @@ wpac_init.push({widget: 'Rating', id: 23889});
           <div class="tag-cloud-title">
           </div>
           <div class="tag-cloud-tags">
-            <a href="/tags/App/" style="font-size: 10px; color: #f06966">App</a> <a href="/tags/JavaScript/" style="font-size: 20px; color: #39bae8">JavaScript</a> <a href="/tags/vue/" style="font-size: 10px; color: #f06966">vue</a>
+            <a href="/tags/App/" style="font-size: 10px; color: #f06966">App</a> <a href="/tags/JavaScript/" style="font-size: 20px; color: #39bae8">JavaScript</a> <a href="/tags/vue/" style="font-size: 15px; color: #9592a7">vue</a>
           </div>
         </div> -->
       </article>
@@ -658,7 +725,7 @@ gitalk.render('gitalk-container')
   <div class="m-avatar">
     <img src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/WechatIMG32.png">
   </div>
-  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">whwhz光影教会</p>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">whwhzzhuowh</p>
   <p style="text-align: center; word-spacing: 20px;">
     
   </p>
