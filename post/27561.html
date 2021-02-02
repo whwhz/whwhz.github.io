@@ -139,7 +139,7 @@
   $.get("https://v1.hitokoto.cn?c=h&c=a", function (data, status) {
     if (status == 'success') {
       $('#poem2').html(data.hitokoto)
-      if (data.from_who != null) {
+      if (data.from_who) {
         $('#info2').html(data.from_who + " · " + "《" + data.from + "》 ");
       } else {
         $('#info2').html(" “ " + data.from + "” ");
@@ -209,6 +209,54 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
 <div class="pattern-center-blank"></div>
 
+<div class="pattern-center single-center">
+  <!-- 有配图默认渲染第一张 -->
+  <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/v3vue.webp);"
+    src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/v3vue.webp">
+  </div>
+  <header class="pattern-header single-header">
+    <h1 class="entry-title">Vue3-Next!</h1>
+    <p class="entry-census">
+      
+      
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar"></i>
+        </span>
+        <span class="post-meta-item-text"> 2021-1-29 </span>
+      </span>
+      <span class="bull">
+        ·</span>
+      <!-- 浏览数显示 -->
+      <span class="post-meta-item" >
+        <span class="post-meta-item-icon">
+          <i class="iconfont icon-attention"></i>
+        </span>
+        <span class="post-meta-item-text">本文共<span id="busuanzi_value_page_pv"> </span>次阅读
+        </span>
+      </span>
+      <span class="bull">
+        ·</span>
+      <!-- 字数统计-->
+      <span class="post-meta-item" >
+
+        
+      </span>
+      <span class="bull">
+        ·</span>
+      <!-- 评论数显示 -->
+      <!-- <span class="post-meta-item" >
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              </span class="post-meta-item-text">
+                <span class="valine-comment-count" data-xid="/27561"> </span>
+              </span>
+          </span> -->
+    </p>
+  </header>
+</div>
+
 <div id="content" class="site-content">
   <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
@@ -227,24 +275,99 @@
 <li>Custom Renderer API (自定义渲染器)</li>
 <li>内置新特性组件</li>
 </ul>
-<h3 id="性能-Performance-Tree-shaking"><a href="#性能-Performance-Tree-shaking" class="headerlink" title="性能 Performance Tree shaking"></a>性能 Performance Tree shaking</h3><p>从官方给出的运行时编译视图中可以看到, 在 vue3 对模板解析为 vNode 的过程中, 在 render 函数对每个元素添加了不同状态的标记</p>
-<pre><code>  &lt;div id="app"&gt;
+<h3 id="性能-Performance-Tree-shaking"><a href="#性能-Performance-Tree-shaking" class="headerlink" title="性能 Performance Tree shaking"></a>性能 Performance Tree shaking</h3><p>从官方给出的运行时编译视图中可以看到, 在 vue3 对模板解析为 vNode 的过程中, 在 render 函数对每个元素添加了不同状态的静态标记, 以此在生成 Virtual Dom 时而通过这些标记 flag 来判断减少不必要的 diff 而提升性能</p>
+<p><strong>diff 优化</strong></p>
+<pre><code> // dom
+  &lt;div id="app"&gt;
+    &lt;h1&gt;hello vue3&lt;/h1&gt;
     &lt;div :id="id"&gt;{{ msg }}&lt;/div&gt;
   &lt;/div&gt;
 
-  // 编译之后是
+  // vue2 render
+
+  function render() {
+    with(this) {
+      return _c('div', {
+        attrs: {
+          "id": "app"
+        }
+      }, [_c('h1', [_v("hello vue3")]), [_c('div', [_v(
+        _s(name))])])
+    }
+  }
+
+  // vue3 render
 
   import { toDisplayString as _toDisplayString, createVNode as _createVNode, openBlock as _openBlock, createBlock as _createBlock } from "vue"
 
   export function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (_openBlock(), _createBlock("div", { id: "app" }, [
+      _createVNode("h1", null, "hello vue3"),
       _createVNode("div", { id: _ctx.id }, _toDisplayString(_ctx.msg), 9 /* TEXT, PROPS */, ["id"])
     ]))
   }
 
   // Check the console for the AST
 </code></pre>
-<p>由此可见, render 中根据当前所用到的功能进行导入模块/函数, 并对动态属性进行标记, 以便于之后的遍历和更新, 会在遍历时过滤掉不需要的静态元素, 打包时也不会打包到最终代码里, 因此文件总量会相较于之前小很多</p>
+<p><strong>hoistStatic 静态提升</strong><br>vue3 中对于不参与更新的元素, 会进行静态提升, 只会被创建一次, 在后续渲染时直接进行复用(vue2 中每次都需重新创建)</p>
+<pre><code>  // dom
+  &lt;div id="app"&gt;
+    &lt;p&gt;p1&lt;/p&gt;
+    &lt;p&gt;p2&lt;/p&gt;
+    &lt;p&gt;{{ msg }}&lt;/p&gt;
+  &lt;/div&gt;
+
+  // 没有 hoistStatic
+
+  export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock("div", { id: "app" }, [
+      _createVNode("p", null, "p1"),
+      _createVNode("p", null, "p2"),
+      _createVNode("p", null, _toDisplayString(_ctx.msg), 1 /* TEXT */)
+    ]))
+  }
+
+ // 进行 hoistStatic render
+
+  const _hoisted_1 = { id: "app" }
+  const _hoisted_2 = /*#__PURE__*/_createVNode("p", null, "p1", -1 /* HOISTED */)
+  const _hoisted_3 = /*#__PURE__*/_createVNode("p", null, "p2", -1 /* HOISTED */)
+
+  export function render(_ctx, _cache, $props, $setup, $data, $options) {
+    return (_openBlock(), _createBlock("div", _hoisted_1, [
+      _hoisted_2,
+      _hoisted_3,
+      _createVNode("p", null, _toDisplayString(_ctx.msg), 1 /* TEXT */)
+    ]))
+  }
+
+// Check the console for the AST
+</code></pre>
+<p>由此可见, render 中根据当前所用到的功能进行导入模块/函数, 并对动态属性进行标记, 以便于之后的遍历和更新, 会在遍历时过滤掉不需要对比的静态元素</p>
+<p><strong>cacheHandlers 事件监听缓存</strong><br>对于绑定的同一个事件, 会把事件元素标记为动态属性而进行 diff, 进行 cacheHandlers 之后事件元素会进行缓存在更新时直接获取</p>
+<pre><code>  // dom
+  &lt;div id="app"&gt;
+    &lt;button @click="handleClick"&gt;click&lt;/button&gt;
+  &lt;/div&gt;
+
+  //  cacheHandlers 前
+  export function render(_ctx, _cache, $props, $setup, $data, $options) {
+    return (_openBlock(), _createBlock("div", { id: "app" }, [
+      _createVNode("button", { onClick: _ctx.handleClick }, "click", 8 /* PROPS */, ["onClick"])
+    ]))
+  }
+
+  // cacheHandlers 开启之后
+  export function render(_ctx, _cache, $props, $setup, $data, $options) {
+    return (_openBlock(), _createBlock("div", { id: "app" }, [
+      _createVNode("button", {
+        onClick: _cache[1] || (_cache[1] = (...args) =&gt; (_ctx.handleClick &amp;&amp; _ctx.handleClick(...args)))
+      }, "click")
+    ]))
+  }
+
+</code></pre>
+<p>在 vue3 的 diff 算法中, 只有进行过静态标记的才会进行比较追踪</p>
 <h3 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h3><ul>
 <li>解释为不在限于模板中的单个根节点</li>
 </ul>
@@ -254,29 +377,39 @@
   &lt;div&gt;div2&lt;/div&gt;
  &lt;/template&gt;
 </code></pre>
-<h3 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h3><p>相较于 vue2 基于原型的设计把钩子函数和核心方法挂载到实例上不同, vue3 则是把核心方法分离到一个个函数中进行组合使用, 可根据需要只使用部分函数, 而不在有过多的冗余</p>
-<pre class=" language-js"><code class="language-js">   <span class="token keyword">import</span> <span class="token punctuation">{</span> computed<span class="token punctuation">,</span> reactive<span class="token punctuation">,</span> onMounted <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<h3 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h3><p>相较于 vue2 基于原型的设计把钩子函数和核心方法挂载到实例上不同, vue3 则是把核心方法分离到一个个函数中进行组合使用, 可根据需要只使用部分函数, 而不在有过多的 this 绑定减少冗余</p>
+<pre class=" language-js"><code class="language-js">    <span class="token keyword">import</span> <span class="token punctuation">{</span> computed<span class="token punctuation">,</span> reactive<span class="token punctuation">,</span> onMounted <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+    <span class="token keyword">function</span> <span class="token function">useInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        page_num<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        page_size<span class="token punctuation">:</span> <span class="token number">10</span>
+        total<span class="token punctuation">:</span> <span class="token number">10</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token keyword">function</span> <span class="token function">ready</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">onMounted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+          console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'mounted'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">const</span> userInfo <span class="token operator">=</span> <span class="token function">computed</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>userInfo <span class="token punctuation">)</span>
 
-   <span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-     page_num<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-     page_size<span class="token punctuation">:</span> <span class="token number">10</span>
-     total<span class="token punctuation">:</span> <span class="token number">10</span>
-   <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        state<span class="token punctuation">,</span> ready<span class="token punctuation">,</span> userInfo
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 
-   <span class="token keyword">function</span> <span class="token function">mountedInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-     <span class="token function">onMounted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-       console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'mounted'</span><span class="token punctuation">)</span>
-     <span class="token punctuation">}</span><span class="token punctuation">)</span>
-   <span class="token punctuation">}</span>
+    <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> <span class="token punctuation">{</span> state<span class="token punctuation">,</span> ready<span class="token punctuation">,</span> userInfo <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+</code></pre>
+<p>没有引用的方法, 则会被 tree-shaking 优化掉, 打包时也不会打包到最终代码里, 因此文件总量会相较于之前小很多<br>可以利用混入的思想, 对模块进行分解细化处理来更好的实现模块化</p>
+<!-- ### Custom Renderer API -->
 
-  <span class="token keyword">const</span> userInfo <span class="token operator">=</span> <span class="token function">computed</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>userInfo <span class="token punctuation">)</span>
-
-vue runtime<span class="token operator">-</span>core</code></pre>
-<p>可以利用混入的思想, 对模块进行分解细化处理来更好的实现模块化</p>
-<h3 id="Custom-Renderer-API"><a href="#Custom-Renderer-API" class="headerlink" title="Custom Renderer API"></a>Custom Renderer API</h3><h3 id="内置函数-钩子"><a href="#内置函数-钩子" class="headerlink" title="内置函数/钩子"></a>内置函数/钩子</h3><ul>
-<li><p><strong>ref</strong><br>定义一个响应式变量, 相当于 data()中的数据</p>
+<h3 id="内置函数-钩子"><a href="#内置函数-钩子" class="headerlink" title="内置函数/钩子"></a>内置函数/钩子</h3><ul>
+<li><p><strong><code>setup()</code></strong><br>beforeCreate -&gt; setup -&gt; created 的一个执行时机<br>setup 函数中, this 无法使用<br>setup 函数只能为同步, 无法添加 async 修饰</p>
+</li>
+<li><p><strong><code>ref</code></strong><br>接收一个简单类型的变量, 返回一个 proxy 对象,并监听其修改 相当于 data()中的定义的数据<br>在 vue 中可以直接使用, js 中需要 ref.value 来使用</p>
 <pre class=" language-js"><code class="language-js"><span class="token keyword">const</span> n <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
+<span class="token comment" spellcheck="true">// ref 本质还是 reactive 上面还等于 const n = reactive({ value: 11 });</span>
 <span class="token keyword">return</span> <span class="token punctuation">{</span>
   <span class="token comment" spellcheck="true">// 导出之后的数据才能在视图中使用</span>
   n<span class="token punctuation">,</span>
@@ -284,10 +417,9 @@ vue runtime<span class="token operator">-</span>core</code></pre>
 <p>vue2.x 用来接收元素实例的 ref 也可以进行接收</p>
 <pre class=" language-js"><code class="language-js">  <span class="token operator">&lt;</span>div ref<span class="token operator">=</span><span class="token string">"dom"</span><span class="token operator">></span>获取DOM元素<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
 
-  <span class="token keyword">const</span> dom <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// div</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span>
-    dom
-  <span class="token punctuation">}</span>
+  <span class="token function">onMounted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> dom <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// div</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
   <span class="token comment" spellcheck="true">// 也可以通过函数的形式进行定义</span>
   <span class="token operator">&lt;</span>div <span class="token punctuation">:</span>ref<span class="token operator">=</span><span class="token string">"setRef"</span><span class="token operator">></span>获取DOM元素<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
@@ -300,7 +432,7 @@ vue runtime<span class="token operator">-</span>core</code></pre>
   <span class="token punctuation">}</span>
 </code></pre>
 </li>
-<li><p><strong>reactive toRefs</strong><br>跟 ref 作用类似, 把参数响应式的处理, 接收参数为一个对象</p>
+<li><p><strong><code>reactive</code></strong><br>跟 ref 作用类似, 把参数响应式的处理, 接收参数为一个对象</p>
 <pre class=" language-js"><code class="language-js"><span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
   num<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -314,7 +446,70 @@ vue runtime<span class="token operator">-</span>core</code></pre>
   <span class="token operator">...</span><span class="token function">toRefs</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">,</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
 </li>
-<li><p>生命周期</p>
+<li><p><strong><code>toRef toRefs</code></strong><br>生成响应式数据<br>如果使用 ref 将某一个对象中的属性变成响应式的数据, 修改响应式数据是不会影响到原始的数据<br>toRef 会影响到原始数据, 如果响应式的数据是通过 toRef 创建的, 修改则不会触发 ui 更新<br>适用于各种性能优化的场景</p>
+<pre><code>  let obj = { name: 'hello' }
+  let name = toRef(obj, 'name')
+
+  function handle() {
+    name.value = 'world'  // 此时obj和name都发生了修改 但是ui不会更新
+  }
+
+  // toRefs 不需要指定key值 会将整个对象进行操作
+  let state = toRefs(obj)
+  function handle() {
+    state.name.value = 'world'
+  }
+</code></pre>
+</li>
+<li><p><strong><code>readonly shallowReadonly</code></strong><br>readonly 用于创建只读对象, 并且是递归只读<br>shallowReadonly 用于创建非递归只读对象, 只是第一层数据只读<br>与 const 只读不同于 const 不能给变量重新赋值, readonly 是属性保护, 不能给属性重新赋值</p>
+</li>
+<li><p><strong><code>shallowReactive shallowRef triggerRef</code></strong><br>创建非递归数据进行监听, 控制递归的程度, 适用用于在数据量比较大 层级较深的场景<br>如果是通过 shallowRef 创建的数据, vue 监听的是.value 的变化而不是第一层的变化<br>triggerRef 根据传入的数据, 主动的更新界面, 如果是 reactive 类型数据, 无法主动进行更新</p>
+</li>
+<li><p><strong><code>isRef isReactive isReadonly</code></strong><br>返回对象是否属于响应式对象和类型</p>
+</li>
+<li><p><strong><code>toRaw markRaw</code></strong><br><code>toRaw</code> 返回代理对象的原始对象<br><code>markRaw</code> 传入不需要被追踪的对象</p>
+<pre><code>
+  let obj = { name: "hello" };
+  let state = reactive(obj); // Proxy&nbsp;{name: "hello"}
+  let obj2 = toRaw(state); // {name: "hello"}
+
+  obj === state // false
+  obj === obj2 // true
+
+  // 如果使用ref
+  let obj3 = ref(hello)
+  let obj4 = toRaw(obj3.value)
+</code></pre>
+<p><code>ref/reactive</code> 每次修改都会被追踪/更新 ui 界面, 有大量修改是很消耗性能的, 如果有一些操作不需要修改 ui, 则可以使用 <code>toRaw</code> 方法获取原始数据在进行修改就不会被追踪节省性能</p>
+</li>
+<li><p><strong><code>customRef</code></strong><br>返回一个 ref 对象, 可以显式的控制依赖追踪和触发响应</p>
+<pre class=" language-js"><code class="language-js">  <span class="token keyword">function</span> <span class="token function">myRef</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">customRef</span><span class="token punctuation">(</span><span class="token punctuation">(</span>track<span class="token punctuation">,</span> trigger<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// customRef 可以用来异步操作, 但是在get中调用 trigger, 会导致内存泄漏</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">track</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 表明这个数据是需要追踪变化的</span>
+          <span class="token keyword">return</span> value<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token keyword">set</span><span class="token punctuation">(</span>newValue<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          value <span class="token operator">=</span> newValue<span class="token punctuation">;</span>
+          <span class="token function">trigger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 更新数据</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> name <span class="token operator">=</span> <span class="token function">myRef</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span>
+    <span class="token keyword">const</span> handle <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      name<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token string">'world'</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      name<span class="token punctuation">,</span> handle
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span></code></pre>
+</li>
+<li><p><strong>生命周期</strong></p>
 <pre><code>  2.x与 3.0的对照
   beforeCreate -&gt; 使用 setup()
   created -&gt; 使用 setup()
@@ -350,7 +545,7 @@ vue runtime<span class="token operator">-</span>core</code></pre>
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span></code></pre>
 </li>
-<li><p>getCurrentInstance 获取当前实例<br>3.0 中摒弃了传统 this 来调用实例对象, 提供了 <code>getCurrentInstance</code> 来获取当前组件实例, 可以通过 <code>ctx</code> 来获取上下文对象</p>
+<li><p><strong><code>getCurrentInstance</code> 获取当前实例</strong><br>3.0 中摒弃了传统 this 来调用实例对象, 提供了 <code>getCurrentInstance</code> 来获取当前组件实例, 可以通过 <code>ctx</code> 来获取上下文对象</p>
 <pre class=" language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">{</span> ctx <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">getCurrentInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment" spellcheck="true">// ctx.$router / ctx.$props  ctx.$parent 等</span>
 
@@ -360,7 +555,7 @@ ctx<span class="token punctuation">.</span>$router<span class="token punctuation
   <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 </li>
-<li><p>新观察者 <code>watch</code> 和计算属性 <code>computed watchEffect</code></p>
+<li><p><strong>新观察者 <code>watch</code> 和计算属性 <code>computed watchEffect</code></strong></p>
 <pre class=" language-js"><code class="language-js"><span class="token function">watch</span><span class="token punctuation">(</span>
   <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> n1<span class="token punctuation">.</span>value<span class="token punctuation">,</span>
   <span class="token punctuation">(</span>newVal<span class="token punctuation">,</span> oldVal<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>

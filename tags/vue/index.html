@@ -139,7 +139,7 @@
   $.get("https://v1.hitokoto.cn?c=h&c=a", function (data, status) {
     if (status == 'success') {
       $('#poem2').html(data.hitokoto)
-      if (data.from_who != null) {
+      if (data.from_who) {
         $('#info2').html(data.from_who + " · " + "《" + data.from + "》 ");
       } else {
         $('#info2').html(" “ " + data.from + "” ");
@@ -243,7 +243,7 @@
           <i class="iconfont icon-text">
           </i>
         </div>
-        <img width="150" height="150" src=""
+        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/v3vue.webp"
           class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="">
       </a>
     </div>

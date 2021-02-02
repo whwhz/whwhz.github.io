@@ -139,7 +139,7 @@
   $.get("https://v1.hitokoto.cn?c=h&c=a", function (data, status) {
     if (status == 'success') {
       $('#poem2').html(data.hitokoto)
-      if (data.from_who != null) {
+      if (data.from_who) {
         $('#info2').html(data.from_who + " · " + "《" + data.from + "》 ");
       } else {
         $('#info2').html(" “ " + data.from + "” ");
@@ -329,15 +329,15 @@ wpac_init.push({widget: 'Rating', id: 23889});
         
           <div class="post-nepre full previous">
             
-            <a href="/post/31766.html" rel="prev">
+            <a href="/post/20333.html" rel="prev">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src=""
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/WechatIMG38.jpeg"
                   style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)"
-                  src="">
+                  src="https://cdn.jsdelivr.net/gh/whwhz/jsdelivr/img/WechatIMG38.jpeg">
               </div>
               <span class="label">Previous Post</span>
               <div class="info">
-                <h3>ones</h3>
+                <h3>那些好用的工具函数整理</h3>
                 <hr>
               </div>
             </a>

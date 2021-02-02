@@ -139,7 +139,7 @@
   $.get("https://v1.hitokoto.cn?c=h&c=a", function (data, status) {
     if (status == 'success') {
       $('#poem2').html(data.hitokoto)
-      if (data.from_who != null) {
+      if (data.from_who) {
         $('#info2').html(data.from_who + " · " + "《" + data.from + "》 ");
       } else {
         $('#info2').html(" “ " + data.from + "” ");
