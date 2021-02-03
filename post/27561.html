@@ -279,8 +279,9 @@
 <p><strong>diff 优化</strong></p>
 <pre><code> // dom
   &lt;div id="app"&gt;
-    &lt;h1&gt;hello vue3&lt;/h1&gt;
-    &lt;div :id="id"&gt;{{ msg }}&lt;/div&gt;
+    &lt;h1&gt;hello&lt;/h1&gt;
+    &lt;p&gt;world&lt;/p&gt;
+    &lt;div :id="id" style="color: red"&gt;{{ msg }}&lt;/div&gt;
   &lt;/div&gt;
 
   // vue2 render
@@ -291,8 +292,14 @@
         attrs: {
           "id": "app"
         }
-      }, [_c('h1', [_v("hello vue3")]), [_c('div', [_v(
-        _s(name))])])
+      }, [_c('h1', [_v("hello")]), _c('p', [_v("world")]), _c('div', {
+        staticStyle: {
+          "color": "red"
+        },
+        attrs: {
+          "id": id
+        }
+      }, [_v(_s(msg))])])
     }
   }
 
@@ -302,12 +309,14 @@
 
   export function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (_openBlock(), _createBlock("div", { id: "app" }, [
-      _createVNode("h1", null, "hello vue3"),
-      _createVNode("div", { id: _ctx.id }, _toDisplayString(_ctx.msg), 9 /* TEXT, PROPS */, ["id"])
+      _createVNode("h1", null, "hello"),
+      _createVNode("p", null, "world"),
+      _createVNode("div", {
+        id: _ctx.id,
+        style: {"color":"red"}
+      }, _toDisplayString(_ctx.msg), 9 /* TEXT, PROPS */, ["id"])
     ]))
   }
-
-  // Check the console for the AST
 </code></pre>
 <p><strong>hoistStatic 静态提升</strong><br>vue3 中对于不参与更新的元素, 会进行静态提升, 只会被创建一次, 在后续渲染时直接进行复用(vue2 中每次都需重新创建)</p>
 <pre><code>  // dom
@@ -343,7 +352,7 @@
 
 // Check the console for the AST
 </code></pre>
-<p>由此可见, render 中根据当前所用到的功能进行导入模块/函数, 并对动态属性进行标记, 以便于之后的遍历和更新, 会在遍历时过滤掉不需要对比的静态元素</p>
+<p>由此可见, render 中根据当前所用到的功能进行导入模块/函数, 并对动态属性进行标记, 以便于之后的遍历和更新, 会在 diff 时过滤掉不需要对比的静态元素</p>
 <p><strong>cacheHandlers 事件监听缓存</strong><br>对于绑定的同一个事件, 会把事件元素标记为动态属性而进行 diff, 进行 cacheHandlers 之后事件元素会进行缓存在更新时直接获取</p>
 <pre><code>  // dom
   &lt;div id="app"&gt;
@@ -401,7 +410,7 @@
       <span class="token keyword">const</span> <span class="token punctuation">{</span> state<span class="token punctuation">,</span> ready<span class="token punctuation">,</span> userInfo <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
 </code></pre>
-<p>没有引用的方法, 则会被 tree-shaking 优化掉, 打包时也不会打包到最终代码里, 因此文件总量会相较于之前小很多<br>可以利用混入的思想, 对模块进行分解细化处理来更好的实现模块化</p>
+<p>没有引用的方法, 则会被 tree-shaking 优化掉, 打包时也不会打包到最终代码里, 因此文件总量会相较于之前小很多<br>可以利用混入的思想, 对模块进行分解细化处理来更好的实现模块化, 避免了 v2 中上下逻辑编写来回切换的问题</p>
 <!-- ### Custom Renderer API -->
 
 <h3 id="内置函数-钩子"><a href="#内置函数-钩子" class="headerlink" title="内置函数/钩子"></a>内置函数/钩子</h3><ul>
